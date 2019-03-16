@@ -23,10 +23,31 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li><a href="~/Account/Logout">LogOut</a></li>
+                    }
+                    else
+                    {
+                        if (ViewBag.Title == "Login")
+                        {
+                            <li class="active" ><a href="~/Account/Login">LogIn</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="~/Account/Login">LogIn</a></li>
+                        }
+
+                    }a
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li> @Html.Action("UserNavPartial","Account",new { area = "" })</li>
+                    }
                 </ul>
                 <ul class="nav navbar-right">
                     <li><a href="~/Account/CreateAccount">Account</a></li>
                 </ul> 
+                
             </div>
         </div>
     </div>

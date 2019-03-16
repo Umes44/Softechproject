@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Softech.Controllers
 {
@@ -15,26 +16,104 @@ namespace Softech.Controllers
         {
             return RedirectToAction("~/Account/Login");
         }
-        //Get:account/createaccount
+        //Get:account/createaccountp
+        [HttpGet]
         public ActionResult Login()
         {
             string Username = User.Identity.Name;
             if (!string.IsNullOrEmpty(Username))
-                return RedirectToAction("UserProfile");
+                return RedirectToAction("userprofile");
             return View();
         }
-
+        [HttpGet]
+        [ActionName("userprofile")]
+        public ActionResult UserProfile()
+        {
+            string username = User.Identity.Name;
+            UserProfile model;
+            using (Db db=new Db())
+            {
+                //GEt user
+                AccountDTO dto = db.Account.FirstOrDefault(x => x.UserName == username);
+                model = new UserProfile(dto);
+                
+            }
+            return View("UserProfile", model);
+        }
+        [HttpPost]
+        [ActionName("userprofile")]
+        public ActionResult UserProfile(UserProfile model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("UserProfile",model);
+            }
+            if (!string.IsNullOrWhiteSpace(model.Password)){
+                if (!model.Password.Equals(model.ConfirmPassword))
+                {
+                    ModelState.AddModelError("", "Password Doesnot Match");
+                    return View("UserProfile", model);
+                }
+            }
+            using (Db db =new Db())
+            {
+                string username = User.Identity.Name;
+                if (db.Account.Where(x => x.UserId != model.UserId).Any(x => x.UserName == username))
+                {
+                    ModelState.AddModelError("", "Username"+model.UserName+"Already Exists");
+                    model.UserName = "";
+                    return View("UserProfile", model);
+                }
+                AccountDTO dto = db.Account.Find(model.UserId);
+                dto.FirstName=model.FirstName;
+                dto.LastName=model.LastName;
+                dto.Email = model.Email;
+                dto.Age = model.Age;
+                dto.Gender = model.Gender;
+                if (!string.IsNullOrWhiteSpace(model.Password))
+                {
+                  
+                    dto.Password = model.Password;
+                } 
+              
+                db.SaveChanges();
+            }
+            TempData["SM"] = "Your Profile Has been Edited";
+            return Redirect("~/Account/userprofile");
+        }
+        [HttpPost]
+        public ActionResult Login(LoginVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isvalid = false;
+            using (Db db=new Db())
+            {
+                if (db.Account.Any(x => x.UserName.Equals(model.Username) && x.Password.Equals(model.Password)))
+                {
+                    isvalid = true;
+                }
+            }
+            if (!isvalid)
+            {
+                ModelState.AddModelError("", "UserName or Password is Wrong");
+                     return View(model);
+            }
+            else
+            {
+                FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+                return Redirect(FormsAuthentication.GetRedirectUrl(model.Username, model.RememberMe));
+            }
+         
+        }
         [ActionName("Createaccount")]
         [HttpGet]
         public ActionResult CreateAccount()
         {
             return View("CreateAccount");
         }
-
-
-        //Get:account/createaccount
-
-
         [HttpPost]
         public ActionResult CreateAccount(AccountVM model)
         {
@@ -60,6 +139,7 @@ namespace Softech.Controllers
 
                 //Create AccountDTO
                 AccountDTO accounts = new AccountDTO() {
+               
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Age = model.Age,
@@ -73,7 +153,7 @@ namespace Softech.Controllers
                 //SAve
                 db.SaveChanges();
                 //Role
-                int id = accounts.Id;
+                int id = accounts.UserId;
                 UserRolesDTO userrolesdto = new UserRolesDTO()
                 {
                     UserId = id,
@@ -85,8 +165,30 @@ namespace Softech.Controllers
             //Tempdata
             TempData["SM"] = "You are now Registered"; 
 
-            return RedirectToAction("~/Account/Login");
+            return RedirectToAction("Login");
 
         }
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return Redirect("~/Account/Login");
+        }
+        public ActionResult UserNavPartial()
+        {
+            string username = User.Identity.Name;
+            UserPartialVM model;
+            using (Db db = new Db())
+            {
+                AccountDTO dto = db.Account.FirstOrDefault(x => x.UserName == username);
+
+                model = new UserPartialVM()
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName
+                };
+            }
+            return PartialView(model);
+        }
     }
+ 
 } 

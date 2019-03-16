@@ -2,19 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
 using System.Web;
 
 namespace Softech.Models.ViewModels
 {
-    public class AccountVM
+    public class UserProfile
     {
-        public AccountVM()
+        public UserProfile()
         {
 
         }
-        public AccountVM(AccountDTO row)
+        public UserProfile(AccountDTO row)
         {
             UserId = row.UserId;
             FirstName = row.FirstName;
@@ -42,8 +41,7 @@ namespace Softech.Models.ViewModels
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
         public string ConfirmPassword { get; set; }
-      
     }
+
 }
