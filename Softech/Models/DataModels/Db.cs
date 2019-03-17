@@ -12,5 +12,6 @@ namespace Softech.Models.DataModels
         public DbSet<AccountDTO> Account { get; set; }
         public DbSet<RolesDTO> Role { get; set; }
         public DbSet<UserRolesDTO> UserRoles { get; set; }
+        public DbSet<JobDTO> Jobs { get; set; }
     }
 }

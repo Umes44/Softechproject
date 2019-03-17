@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Softech.Models.ViewModels.JobVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClientName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeployDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SoftwareName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Other)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClientName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeployDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoftwareName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Other)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.PersonId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PersonId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.PersonId })
+        </td>
+    </tr>
+}
+
+</table>

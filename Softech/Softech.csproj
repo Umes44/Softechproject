@@ -136,14 +136,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\AccountDTO.cs" />
     <Compile Include="Models\DataModels\Db.cs" />
+    <Compile Include="Models\DataModels\JobDTO.cs" />
     <Compile Include="Models\DataModels\RolesDTO.cs" />
     <Compile Include="Models\DataModels\UserRolesDTO.cs" />
     <Compile Include="Models\ViewModels\AccountVM.cs" />
+    <Compile Include="Models\ViewModels\JobVM.cs" />
     <Compile Include="Models\ViewModels\LoginVM.cs" />
     <Compile Include="Models\ViewModels\RolesVM.cs" />
     <Compile Include="Models\ViewModels\UserPartialVM.cs" />
@@ -160,6 +163,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\nepali.datepicker.v2.2.min.css" />
+    <Content Include="Scripts\nepali.datepicker.v2.2.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -545,6 +550,10 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\UserNavPartial.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
+    <Content Include="Views\Job\Index.cshtml" />
+    <Content Include="Views\Job\Create.cshtml" />
+    <Content Include="Views\Job\Edit.cshtml" />
+    <Content Include="Views\Job\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Controllers\" />

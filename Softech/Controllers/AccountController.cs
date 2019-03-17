@@ -22,7 +22,7 @@ namespace Softech.Controllers
         {
             string Username = User.Identity.Name;
             if (!string.IsNullOrEmpty(Username))
-                return RedirectToAction("userprofile");
+                return RedirectToAction("UserProfile");
             return View();
         }
         [HttpGet]
@@ -104,7 +104,7 @@ namespace Softech.Controllers
             else
             {
                 FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
-                return Redirect(FormsAuthentication.GetRedirectUrl(model.Username, model.RememberMe));
+                return RedirectToAction("Index","Job");
             }
          
         }
