@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Data.Entity;
+using Softech.Models.ViewModels;
 
 namespace Softech.Models.DataModels
 {
@@ -13,5 +14,6 @@ namespace Softech.Models.DataModels
         public DbSet<RolesDTO> Role { get; set; }
         public DbSet<UserRolesDTO> UserRoles { get; set; }
         public DbSet<JobDTO> Jobs { get; set; }
+        public DbSet<UserImageDTO> Images { get; set; }
     }
 }

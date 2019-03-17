@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.IO;
+using System.Data.Entity.Infrastructure;
 
 namespace Softech.Controllers
 {
@@ -188,6 +190,46 @@ namespace Softech.Controllers
                 };
             }
             return PartialView(model);
+        }
+        [HttpGet]
+        public ActionResult ImageAdd()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ImageAdd(UserImageVM model)
+        {
+           
+                string filename = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
+                string extension = Path.GetExtension(model.ImageFile.FileName);
+                filename = filename + DateTime.Now.ToString("yymmssff") + extension;
+               model.ImagePath = "~/Image/" + filename;
+                filename = Path.Combine(Server.MapPath("~/Image/"), filename);
+                model.ImageFile.SaveAs(filename);
+            UserImageDTO dto = new UserImageDTO();
+            using (Db db = new Db())
+            {
+
+                dto.Title = model.Title;
+                    dto.ImageId = model.ImageId;
+                    dto.ImagePath = model.ImagePath;  
+                db.Images.Add(dto);
+                db.SaveChanges();
+                ModelState.Clear();
+                TempData["SM"] = "Image Uploaded Successfully";
+                return View();
+            }
+
+        }
+        [HttpPost]
+        public ActionResult ViewImage(int id)
+        {
+            UserImageDTO model;
+            using (Db db = new Db())
+            {
+               model = db.Images.Where(x => x.ImageId == id).FirstOrDefault();
+            }
+            return View(model); 
         }
     }
  
