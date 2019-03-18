@@ -65,12 +65,23 @@
         <dd>
             @Html.DisplayFor(model => model.UserName)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </dt>
-        <dd>
-            <img src="@Url.Content(Model.ImagePath)" width="250" height="250" />
-        </dd>
-
+        @if (Model.ImagePath == null || Model.ImagePath == "")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </dt>
+            <dd>
+                <img src="~/Image/defaultimage.jpg" width="250" height="250" />
+            </dd>
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </dt>
+            <dd>
+                <img src="@Url.Content(Model.ImagePath)" width="250" height="250" />
+            </dd>
+        }
     </dl>
 </div>
