@@ -1,15 +1,22 @@
 ﻿@model Softech.Models.ViewModels.UserImageVM
 
 @{
-    ViewBag.Title = "ViewImage";
+    ViewBag.Title = "ImagesDetails";
 }
 
-<h2>View Image</h2>
+<h2>ImagesDetails</h2>
 
 <div>
 
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageId)
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -20,18 +27,13 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImagePath)
+     Uploaded Image
         </dt>
-
-   
         <dd>
             <img src="@Url.Content(Model.ImagePath)" width="250" height="250" />
         </dd>
-       
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

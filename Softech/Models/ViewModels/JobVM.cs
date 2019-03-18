@@ -22,6 +22,7 @@ namespace Softech.Models.ViewModels
             SoftwareName = row.SoftwareName;
             Description = row.Description;
             Other = row.Other;
+            
         }
         public int PersonId { get; set; }
         [Required]
@@ -35,5 +36,6 @@ namespace Softech.Models.ViewModels
         [Required]
         public string Description { get; set; }
         public string Other { get; set; }
+
     }
 }

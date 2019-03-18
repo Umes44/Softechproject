@@ -1,6 +1,7 @@
 ﻿using Softech.Models.DataModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Softech.Models.ViewModels
             Gender = row.Gender;
             UserName = row.UserName;
             Password = row.Password;
+            ImagePath = row.ImagePath;
 
         }
         public int UserId { get; set; }
@@ -44,6 +46,8 @@ namespace Softech.Models.ViewModels
         public string Password { get; set; }
         [Required]
         public string ConfirmPassword { get; set; }
-      
+        [DisplayName("Upload Image")]
+        public string ImagePath { get; set; }
+        public HttpPostedFileBase ImageFile { get; set; }
     }
 }

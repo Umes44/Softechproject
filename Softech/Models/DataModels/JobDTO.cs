@@ -18,5 +18,6 @@ namespace Softech.Models.DataModels
         public string SoftwareName { get; set; }
         public string Description { get; set; }
         public string Other { get; set; }
+      
     }
 }

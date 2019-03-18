@@ -42,6 +42,8 @@ namespace Softech.Models.ViewModels
         [Required]
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
+        public string Title { get; set; }
+        public string ImagePath { get; set; }
     }
 
 }

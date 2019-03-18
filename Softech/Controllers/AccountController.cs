@@ -123,12 +123,19 @@ namespace Softech.Controllers
             {
                 return View("CreateAccount", model);
             }
+            string filename = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
+            string extension = Path.GetExtension(model.ImageFile.FileName);
+            filename = filename + DateTime.Now.ToString("yymmssff") + extension;
+            model.ImagePath = "~/Image/" + filename;
+            filename = Path.Combine(Server.MapPath("~/Image/"), filename);
+            model.ImageFile.SaveAs(filename);
             //Check if Password match
             if (!model.Password.Equals(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Password Doesnot Match");
                 return View("CreateAccount", model);
             }
+          
             //Username is Unique
             using (Db db = new Db())
             {
@@ -141,18 +148,21 @@ namespace Softech.Controllers
 
                 //Create AccountDTO
                 AccountDTO accounts = new AccountDTO() {
-               
+
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Age = model.Age,
                     Gender = model.Gender,
                     Email = model.Email,
-                UserName = model.UserName,
-                Password = model.Password
+                    UserName = model.UserName,
+                    Password = model.Password,
+             
+                ImagePath=model.ImagePath
                 };
                 //Add AccountDTO
                 db.Account.Add(accounts);
                 //SAve
+                ModelState.Clear();
                 db.SaveChanges();
                 //Role
                 int id = accounts.UserId;
@@ -162,7 +172,9 @@ namespace Softech.Controllers
                 RolesId = 2
                 };
                 db.UserRoles.Add(userrolesdto);
+
                 db.SaveChanges();
+              
             }
             //Tempdata
             TempData["SM"] = "You are now Registered"; 
@@ -221,15 +233,78 @@ namespace Softech.Controllers
             }
 
         }
-        [HttpPost]
-        public ActionResult ViewImage(int id)
+        [HttpGet]
+        public ActionResult ViewImages()
         {
-            UserImageDTO model;
+            return View();
+        }
+       
+        public ActionResult ImagesDetails(int id)
+        {
+            // Declare PageVM
+            UserImageVM model;
+
             using (Db db = new Db())
             {
-               model = db.Images.Where(x => x.ImageId == id).FirstOrDefault();
+                // Get the page
+                UserImageDTO dto = db.Images.Find(id);
+
+                // Confirm page exists
+                if (dto == null)
+                {
+                    return Content("The item does not exist.");
+                }
+
+                // Init PageVM
+                model = new UserImageVM(dto);
             }
-            return View(model); 
+
+            // Return view with model
+            return View(model);
+        }
+        //{
+        //    UserImageVM model;
+
+        //    using (Db db = new Db())
+        //    {
+        //        UserImageDTO dto;
+
+        //        dto = db.Images.Where(x => x.ImageId == id).FirstOrDefault();
+        //        model = new UserImageVM(dto);
+        //    }
+        //    return View(model); 
+        //}
+        public ActionResult ImageDetails()
+        {
+            List<UserImageVM> Imagesslist;
+            using (Db db = new Db())
+
+            {
+                Imagesslist = db.Images.ToArray().OrderBy(x=>x.Title).Select(x=>new UserImageVM()).ToList();
+            }
+            return View(Imagesslist);
+        }
+        public ActionResult UserDetails()
+        {
+            // Declare PageVM
+            AccountVM model;
+            using (Db db = new Db())
+            {
+                // Get the page
+                string username = User.Identity.Name;
+                AccountDTO dto = db.Account.FirstOrDefault(x => x.UserName == username);
+
+                // Confirm page exists
+                if (dto == null)
+                {
+                    return Content("The item does not exist.");
+                }
+
+                // Init PageVM
+                model = new AccountVM(dto);
+            }
+            // Return view with model
+            return View(model);
         }
     }
  
