@@ -96,19 +96,20 @@ namespace Softech.Controllers
                 if (db.Account.Any(x => x.UserName.Equals(model.Username) && x.Password.Equals(model.Password)))
                 {
                     isvalid = true;
+                   
                 }
             }
             if (!isvalid)
             {
                 ModelState.AddModelError("", "UserName or Password is Wrong");
-                     return View(model);
+                return View(model);
             }
             else
             {
                 FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
-                return RedirectToAction("Index","Job");
+                return RedirectToAction("Index", "Job");
             }
-         
+
         }
         [ActionName("Createaccount")]
         [HttpGet]

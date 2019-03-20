@@ -25,7 +25,7 @@ namespace Softech.Controllers
         public ActionResult Create()
         {
             return View();
-
+           
         }
         [HttpPost]
         public ActionResult Create(JobVM model)
@@ -56,7 +56,7 @@ namespace Softech.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-           JobVM model;
+            JobVM model;
             using (Db db = new Db())
             {
               JobDTO dto = db.Jobs.Find(id);
@@ -64,7 +64,7 @@ namespace Softech.Controllers
                 {
                     return Content("The List doesnt exist");
                 }
-                model = new JobVM(dto);
+            model = new JobVM(dto);
             }
             return View(model);
         }
